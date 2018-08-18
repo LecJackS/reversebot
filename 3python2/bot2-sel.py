@@ -1,0 +1,77 @@
+import praw
+import selenium
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+
+#initializing bot client
+bot = praw.Reddit(user_agent='reversebot69',
+                  client_id='EP1GYs0pY7LmOA',
+                  client_secret='-NDeSW7zUrA_p8Auop2szWlwDVk',
+                  username='reversebot69',
+                  password='celestereddit159')
+                  
+subreddit = bot.subreddit('gifs')
+#comments = subreddit.stream.comments()
+
+#submissions = subreddit.top
+
+#selecting gif from top of ALL TIME gifs on /r/gifs
+for x in subreddit.top('all'):
+    #print x.permalink
+    #print x.url
+    randurl = x.url
+
+#randurl = subreddit.top('all')[0]
+randurl = randurl.replace(".gifv", ".mp4")
+print "Testing this gif url " + randurl
+
+
+reversedurl = "https://ezgif.com/reverse-video?url=" + randurl
+
+#browser = webdriver.Chrome()
+browser = webdriver.Firefox(executable_path=r'C:\Users\Jack\Desktop\reversebot\3python2\driver\geckodriver.exe')
+#driver = webdriver.Chrome(executable_path='/usr/bin/')
+
+print("Opening site")
+browser.get(reversedurl)
+print("Clicking reverse! button")
+browser.find_element_by_css_selector('.button.primary').click()
+
+time.sleep(7)
+#WebDriverWait(browser, 8)
+#browser.find_element_by_css_selector('.outfile')
+#rev_url = browser.find_elements_by_tag_name('video')[1].find_element_by_tag_name('source').get_attribute('src')
+#rev_url = browser.find_element_by_xpath('//*[@id="output"]/p[1]/video/source')#.get_attribute('src')
+print("Getting reversed gif url")
+#rev_url = browser.find_element(By.XPATH, '//*[@id="output"]/p[1]/video/source').get_attribute('src')
+#rev_url = browser.find_element(By.XPATH, '/html/body/div/div[4]/div[2]/div[4]/p[1]/video/source').get_attribute('src')
+
+
+try:
+    rev_url = browser.find_element(By.XPATH, '/html/body/div/div[4]/div[2]/div[4]/p[1]/video/source').get_attribute('src')
+    #rev_url = browser.find_element(By.XPATH, '//*[@id="output"]/p[1]/video/source').get_attribute('src')
+    #rev_url = WebDriverWait(browser, 30).until(
+    #    EC.presence_of_element_located((By.xpath, '//*[@id="output"]/p[1]/video/source'))).get_attribute('src')
+finally:
+    print(rev_url)
+    #browser.quit()
+
+
+browser.quit()
+
+
+
+
+'''for comment in comments:
+    text = comment.body # Fetch body
+    author = comment.author # Fetch author
+    if 'space' in text.lower():
+        # Generate a message
+        #message = "Why no love for Titan, u/{0} ?".format(author)
+        print "Found:"
+        print "- User: "+str(author)
+        #comment.reply(message) # Send message
+        print "waiting..."
+        '''
